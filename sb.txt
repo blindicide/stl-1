@@ -1,0 +1,70 @@
+async def mainFunction(message: Message):
+    userid = message.from_user.id
+    user = True
+    # print(user)
+    if user is not False:
+      if message.text != '/balance':
+        if message.text == '/start':
+            await message.answer(
+               """Привет и добро пожаловать в бота AS1MOV! Полезные команды:
+               /help -- помощь
+               /settings -- настройки
+               /balance -- проверить баланс"""
+                                 )
+        elif message.text == '/help':
+           await message.answer(
+               """Полезные команды:
+               /help -- помощь
+               /settings -- настройки
+               /balance -- проверить баланс
+               По всем вопросам обращайтесь к создателю: @Might_Is_the_Right"""
+                                 )
+        elif message.text == '/settings':
+           await message.answer('В процессе разработки. Если хотите отключить контекст, напишите /context.')
+        elif message.text == '/context':
+           if usercontext is False:
+              usercontext = True
+              user[3] = usercontext
+              await message.answer('Контекст включён. Затраты кредитов увеличены.')
+              all_user_list = closeAndOpenUserFile(all_user_list)
+           else:
+              usercontext = False
+              user[3] = usercontext
+              await message.answer('Контекст отключён.')
+              all_user_list = closeAndOpenUserFile(all_user_list)
+        else:
+            if usercontext is False:
+              ans, all_user_list, tkns = sendRequestNoContext(message.text, usermodel, all_user_list, userid)
+              await message.answer(ans)
+              sp = 'Токенов всего: ' + str(tkns) + '. Стоимость: ' + str(usermodel[1]*tkns) + ' кредитов.'
+              await message.answer(sp)
+              print(str(userid) + ':')
+              print(message.text)
+              print(ans)
+              print('--------------------')
+            else:
+              ans, all_user_list, tkns = sendRequest(message.text, usermodel, all_user_list, userid)
+              await message.answer(ans)
+              sp = 'Токенов всего: ' + str(tkns) + '. Стоимость: ' + str(usermodel[1]*tkns) + ' кредитов.'
+              await message.answer(sp)
+              print(str(userid) + ':')
+              print(message.text)
+              print(ans)
+              print('--------------------')
+      else:
+         usercredits = user[1]
+         msg = 'У вас осталось '
+         msg += str(usercredits)
+         msg += ' кредитов.'
+         await message.answer(msg)
+    else:
+       await message.answer("Подождите, пока происходит ваша регистрация...")
+       newuser = [userid, 50000, model_noromaid, True, [{"role": "user", "content": "This is a placeholder message. You can ignore it."}]]
+       all_user_list.append(newuser)
+       all_user_list = closeAndOpenUserFile(all_user_list)
+       await message.answer(
+               """Привет и добро пожаловать в бота AS1MOV! Полезные команды:
+               /help -- помощь
+               /settings -- настройки
+               /balance -- проверить баланс"""
+                                 )

@@ -1,2 +1,5 @@
 keys.py
 admin.py
+.venv
+.vscode
+__pycache__
