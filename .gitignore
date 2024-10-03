@@ -3,3 +3,9 @@ admin.py
 .venv
 .vscode
 __pycache__
+logs
+oldlogs
+t.txt
+nohup.out
+startstop.sh
+
